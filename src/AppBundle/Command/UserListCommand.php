@@ -17,7 +17,7 @@ class UserListCommand extends ContainerAwareCommand
     {
         $this
             ->setName('user:list')
-            ->setDescription('command for testing');
+            ->setDescription('User list');
 
     }
 
