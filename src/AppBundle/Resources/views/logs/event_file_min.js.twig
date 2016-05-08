@@ -1,13 +1,29 @@
-jQuery(document).ready(function(){
-    jQuery.ajax({
-        method: "POST",
-        url: '{{url("log-add")|raw}}',
-        data: {
-            'log_params' : {
-                user: 'user_name',
-                uri: window.location.href,
-                page_title: document.title
+{#
+<script type="text/javascript">
+#}
+    function logSend(){
+        jQuery.ajax({
+            method: "POST",
+            url: '{{url("log-add")|raw}}',
+            data: {
+                'log_params' : {
+                    user: 'user_name',
+                    uri: window.location.href,
+                    page_title: document.title
+                }
             }
+        });
+    }
+
+    jQuery(document).ready(function(){
+        var user_name = $('#current_user_name').length ? $('current_user_name').val() : null;
+        if (user_name) {
+            logSend();
+        } else {
+            console.error('Не удалось получить имя пользователя. Проверьте наличие элемента #current_user_name на странице');
         }
-    })
-});
+
+    });
+    {#
+</script>
+#}
