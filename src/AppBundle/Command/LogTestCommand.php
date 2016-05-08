@@ -4,6 +4,7 @@ namespace AppBundle\Command;
 
 use AppBundle\Command\Traits\CommandTrait;
 use AppBundle\Document\Log;
+use AppBundle\Document\UserLog;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -28,43 +29,57 @@ class LogTestCommand extends ContainerAwareCommand
         /** @var OutputInterface $output */
         $this->output = $output;
 
-        $username = 'user_test';
+        $username = 'isakova';
 
         /** @var DocumentManager $dm */
         $dm = $this->getContainer()->get('doctrine_mongodb')->getManager();
-        $rep = $dm->getRepository('AppBundle:Log');
-        $log = $rep->findOneBy(['user_name'=>$username]);
+        $rep = $dm->getRepository('AppBundle:UserLog');
 
-        if (!$log) {
-            $log = new Log();
-            $log->setUserName($username);
+        /** @var UserLog $user */
+        $user = $rep->findOneBy(['user_name'=>$username]);
+
+        if (!$user) {
+            $user = new UserLog();
+            $user->setUserName($username);
         }
 
-        $dm->persist($log);
+        //добавляем логи
+        $log = new Log();
+        $log
+            ->setUri('http://artsofte.ru/news')
+            ->setTitle('Artsofte - Новости');
+
+        $user->addLog($log);
+
+        $dm->persist($user);
         $dm->flush();
 
         $logs = [];
 
         //$log_list = $rep->findAll();
         $log_list = $dm
-            ->createQueryBuilder('AppBundle:Log')
+            ->createQueryBuilder('AppBundle:UserLog')
             //->field('user_name')->equals('vdanilov')
             ->limit(10)
             ->sort('user_name', 'ASC')
             ->getQuery()
             ->execute();
 
-        foreach ($log_list as $log) {
+        foreach ($log_list as $user) {
             $logs[] = [
-                $log->getUserName()
+                $user->getUserName(),
+                $user->getCreatedAtFormat(),
+                $user->getUpdatedAtFormat(),
+                count($user->getLogs())
             ];
         }
 
         $table = new Table($output);
         $table
-            ->setHeaders(['User name'])
+            ->setHeaders(['User name', 'Created', 'Updated', 'Log count'])
             ->addRows($logs)
             ->render();
+
     }
 
 }

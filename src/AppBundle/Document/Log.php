@@ -5,31 +5,26 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 
 /**
- * @MongoDB\Document
+ * @MongoDB\EmbeddedDocument
  */
 class Log
 {
     /**
-     * @MongoDB\Id
+     * @MongoDB\String
      */
-    protected $id;
+    protected $uri;
 
     /**
      * @MongoDB\String
      */
-    protected $user_name;
+    protected $title;
 
     /**
      * @Gedmo\Timestampable(on="create")
      * @MongoDB\Date
      */
-    protected $created_at;
+    protected $date_time;
 
-    /**
-     * @Gedmo\Timestampable(on="update")
-     * @MongoDB\Date
-     */
-    protected $updated_at;
 
     /**
      * Get id
@@ -42,68 +37,68 @@ class Log
     }
 
     /**
-     * Set userName
+     * Set uri
      *
-     * @param string $userName
+     * @param string $uri
      * @return self
      */
-    public function setUserName($userName)
+    public function setUri($uri)
     {
-        $this->user_name = $userName;
+        $this->uri = $uri;
         return $this;
     }
 
     /**
-     * Get userName
+     * Get uri
      *
-     * @return string $userName
+     * @return string $uri
      */
-    public function getUserName()
+    public function getUri()
     {
-        return $this->user_name;
+        return $this->uri;
     }
 
     /**
-     * Set createdAt
+     * Set title
      *
-     * @param date $createdAt
+     * @param string $title
      * @return self
      */
-    public function setCreatedAt($createdAt)
+    public function setTitle($title)
     {
-        $this->created_at = $createdAt;
+        $this->title = $title;
         return $this;
     }
 
     /**
-     * Get createdAt
+     * Get title
      *
-     * @return date $createdAt
+     * @return string $title
      */
-    public function getCreatedAt()
+    public function getTitle()
     {
-        return $this->created_at;
+        return $this->title;
     }
 
     /**
-     * Set updatedAt
+     * Set dateTime
      *
-     * @param date $updatedAt
+     * @param date $dateTime
      * @return self
      */
-    public function setUpdatedAt($updatedAt)
+    public function setDateTime($dateTime)
     {
-        $this->updated_at = $updatedAt;
+        $this->date_time = $dateTime;
         return $this;
     }
 
     /**
-     * Get updatedAt
+     * Get dateTime
      *
-     * @return date $updatedAt
+     * @return date $dateTime
      */
-    public function getUpdatedAt()
+    public function getDateTime()
     {
-        return $this->updated_at;
+        return $this->date_time;
     }
 }
