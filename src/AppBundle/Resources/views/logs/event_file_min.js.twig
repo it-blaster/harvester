@@ -1,0 +1,13 @@
+jQuery(document).ready(function(){
+    jQuery.ajax({
+        method: "POST",
+        url: '{{url("log-add")|raw}}',
+        data: {
+            'log_params' : {
+                user: 'user_name',
+                uri: window.location.href,
+                page_title: document.title
+            }
+        }
+    })
+});

@@ -5,6 +5,10 @@ namespace AppBundle\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Doctrine\ODM\MongoDB\DocumentManager;
+use AppBundle\Document\Log;
+use AppBundle\Document\UserLog;
 
 /**
  * @Route("/logs")
@@ -16,10 +20,68 @@ class LogsController extends Controller
      */
     public function addAction(Request $request)
     {
-        
+        if (!$log_params=$request->get('log_params')) {
+            throw $this->createNotFoundException('Log params not fonud');
+        }
+
+        if (!is_array($log_params)){
+            throw $this->createNotFoundException('Bad log params');
+        }
+
+        $user_name = (isset ($log_params['user']) ? $log_params['user'] : null);
+        $uri =(isset($log_params['uri']) ? $log_params['uri'] : null);
+        $page_title =(isset($log_params['page_title']) ? $log_params['page_title'] : null);
+
+        if (!$user_name || !$uri){
+            throw $this->createNotFoundException('Bad log params');
+        }
+
+        $this->addUserLog($user_name, $uri, $page_title);
+
         // replace this example code with whatever you need
-        return $this->render('default/index.html.twig', [
-            'base_dir' => realpath($this->getParameter('kernel.root_dir').'/..'),
-        ]);
+        return new Response('success');
+    }
+
+    /**
+     * @Route("/event.js", name="event-file-js")
+     */
+    public function eventFileJsAction(Request $request)
+    {
+        // replace this example code with whatever you need
+        return $this->render('AppBundle:logs:event_file_min.js.twig', []);
+    }
+
+    /**
+     * @Route("/test", name="log-test-page")
+     */
+    public function testAction(Request $request)
+    {
+        return $this->render('AppBundle:logs:test_page.html.twig', []);
+    }
+
+    private function addUserLog($user_name, $uri, $page_title = '')
+    {
+        /** @var DocumentManager $dm */
+        $dm = $this->container->get('doctrine_mongodb')->getManager();
+        $rep = $dm->getRepository('AppBundle:UserLog');
+
+        /** @var UserLog $user */
+        $user = $rep->findOneBy(['user_name'=>$user_name]);
+
+        if (!$user) {
+            $user = new UserLog();
+            $user->setUserName($user_name);
+        }
+
+        //добавляем логи
+        $log = new Log();
+        $log
+            ->setUri($uri)
+            ->setTitle($page_title);
+
+        $user->addLog($log);
+
+        $dm->persist($user);
+        $dm->flush();
     }
 }
