@@ -20,7 +20,7 @@ class LogTestCommand extends ContainerAwareCommand
     {
         $this
             ->setName('log:test')
-            ->setDescription('command for testing');
+            ->setDescription('Testing logs');
 
     }
 
@@ -29,7 +29,7 @@ class LogTestCommand extends ContainerAwareCommand
         /** @var OutputInterface $output */
         $this->output = $output;
 
-        $username = 'isakova';
+        $username = 'vdanilov';
 
         /** @var DocumentManager $dm */
         $dm = $this->getContainer()->get('doctrine_mongodb')->getManager();
@@ -46,40 +46,13 @@ class LogTestCommand extends ContainerAwareCommand
         //добавляем логи
         $log = new Log();
         $log
-            ->setUri('http://artsofte.ru/news')
-            ->setTitle('Artsofte - Новости');
+            ->setUri('http://artsofte.ru/team')
+            ->setTitle('Artsofte - Команда');
 
         $user->addLog($log);
 
         $dm->persist($user);
         $dm->flush();
-
-        $logs = [];
-
-        //$log_list = $rep->findAll();
-        $log_list = $dm
-            ->createQueryBuilder('AppBundle:UserLog')
-            //->field('user_name')->equals('vdanilov')
-            ->limit(10)
-            ->sort('user_name', 'ASC')
-            ->getQuery()
-            ->execute();
-
-        foreach ($log_list as $user) {
-            $logs[] = [
-                $user->getUserName(),
-                $user->getCreatedAtFormat(),
-                $user->getUpdatedAtFormat(),
-                count($user->getLogs())
-            ];
-        }
-
-        $table = new Table($output);
-        $table
-            ->setHeaders(['User name', 'Created', 'Updated', 'Log count'])
-            ->addRows($logs)
-            ->render();
-
     }
 
 }

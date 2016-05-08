@@ -101,4 +101,14 @@ class Log
     {
         return $this->date_time;
     }
+
+    /**
+     * Дата/время лога
+     *
+     * @return string
+     */
+    public function getDateTimeFormat($format = 'd.m.y H:i')
+    {
+        return $this->getDateTime()->format($format);
+    }
 }
