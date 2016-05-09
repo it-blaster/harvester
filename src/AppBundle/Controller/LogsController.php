@@ -93,7 +93,7 @@ class LogsController extends Controller
     {
         /** @var User $user */
         $user = $this->getUser();
-        if (!$user->hasRole('ROLE_ADMIN')) {
+        if (!$user || !$user->hasRole('ROLE_ADMIN')) {
             throw $this->createNotFoundException('Access denied');
         }
 
