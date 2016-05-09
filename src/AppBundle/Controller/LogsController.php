@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use AppBundle\Document\Log;
+use AppBundle\Document\User;
 use AppBundle\Document\UserLog;
 
 /**
@@ -82,5 +83,20 @@ class LogsController extends Controller
 
         $dm->persist($user);
         $dm->flush();
+    }
+
+    /**
+     *
+     * @Route("/users", name="log-users")
+     */
+    public function userListAction(Request $request)
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+        if (!$user->hasRole('ROLE_ADMIN')) {
+            throw $this->createNotFoundException('Access denied');
+        }
+
+        return $this->render('AppBundle:logs:users.html.twig', []);
     }
 }

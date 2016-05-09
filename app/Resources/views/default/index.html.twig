@@ -5,10 +5,16 @@
     <div id="wrapper">
         <div id="container">
             <div id="welcome">
-                <center><h1><span>Пришло время собирать спайс</span></h1></center>
+                <center><h1>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <a href="{{ path('log-users') }}">It's time to gather logs</a>
+                        {% else %}
+                            <span>It's time to gather logs</span>
+                        {% endif %}
+                    </h1></center>
             </div>
 <center>
-    <a href="{{ is_granted('ROLE_ADMIN') ? '/logs' : path('fos_user_security_login') }}">
+    <a href="{{ is_granted('ROLE_ADMIN') ? path('log-users') : path('fos_user_security_login') }}">
         <img src="http://i914.photobucket.com/albums/ac345/485965/Dune/07/07_084_zps8e9c27d8.gif">
     </a>
 </center>
