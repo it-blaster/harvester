@@ -47,8 +47,7 @@ class LogsController extends Controller
      */
     public function eventFileJsAction(Request $request)
     {
-        // replace this example code with whatever you need
-        return $this->render('AppBundle:logs:event_file_min.js.twig', []);
+        return $this->render('AppBundle:logs:event_file.js.twig', []);
     }
 
     /**
