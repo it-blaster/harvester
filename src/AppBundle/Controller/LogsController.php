@@ -97,6 +97,41 @@ class LogsController extends Controller
             throw $this->createNotFoundException('Access denied');
         }
 
-        return $this->render('AppBundle:logs:users.html.twig', []);
+        $dm = $this->container->get('doctrine_mongodb')->getManager();
+        $rep = $dm->getRepository('AppBundle:UserLog');
+        $users = $dm
+            ->createQueryBuilder('AppBundle:UserLog')
+            ->sort('user_name', 'ASC')
+            ->getQuery()
+            ->execute();
+
+        return $this->render('AppBundle:logs:users.html.twig', [
+            'users' => $users
+        ]);
+    }
+
+    /**
+     *
+     * @Route("/users/$user_name", name="user-logs")
+     */
+    public function userLogsAction(Request $request, $user_name)
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+        if (!$user || !$user->hasRole('ROLE_ADMIN')) {
+            throw $this->createNotFoundException('Access denied');
+        }
+
+        $dm = $this->container->get('doctrine_mongodb')->getManager();
+        $rep = $dm->getRepository('AppBundle:UserLog');
+        $users = $dm
+            ->createQueryBuilder('AppBundle:UserLog')
+            ->field('user_name')->equals($user_name)
+            ->getQuery()
+            ->execute();
+
+        return $this->render('AppBundle:logs:user_logs.html.twig', [
+            'users' => $users
+        ]);
     }
 }

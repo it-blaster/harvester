@@ -169,4 +169,24 @@ class UserLog
     {
         return $this->logs;
     }
+
+    /**
+     * 5 последних логов
+     *
+     * @return array
+     */
+    public function getLastLogs()
+    {
+        return $this->getLogs()->slice(-5,5);
+    }
+
+    /**
+     * Кол-во логов у пользователя
+     *
+     * @return int
+     */
+    public function getCountLogs()
+    {
+        return $this->getLogs()->count();
+    }
 }
