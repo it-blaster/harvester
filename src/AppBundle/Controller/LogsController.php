@@ -112,7 +112,7 @@ class LogsController extends Controller
 
     /**
      *
-     * @Route("/users/$user_name", name="user-logs")
+     * @Route("/users/{user_name}", name="user-logs")
      */
     public function userLogsAction(Request $request, $user_name)
     {
@@ -124,14 +124,10 @@ class LogsController extends Controller
 
         $dm = $this->container->get('doctrine_mongodb')->getManager();
         $rep = $dm->getRepository('AppBundle:UserLog');
-        $users = $dm
-            ->createQueryBuilder('AppBundle:UserLog')
-            ->field('user_name')->equals($user_name)
-            ->getQuery()
-            ->execute();
+        $user_log = $rep->findOneBy(['user_name'=>$user_name]);
 
         return $this->render('AppBundle:logs:user_logs.html.twig', [
-            'users' => $users
+            'user' => $user_log
         ]);
     }
 }

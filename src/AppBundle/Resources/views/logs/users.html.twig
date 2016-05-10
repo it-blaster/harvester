@@ -16,7 +16,7 @@
             <tbody>
             {% for user in users %}
                 <tr>
-                    <td>{{ user.getUsername }}</td>
+                    <td><a href="{{ path('user-logs', {'user_name':user.getUsername}) }}">{{ user.getUsername }}</a></td>
                     <td>{{ user.getCreatedAtFormat }}</td>
                     <td>{{ user.getUpdatedAtFormat }}</td>
                     <td>{{ user.getCountLogs }}</td>
