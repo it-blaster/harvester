@@ -1,4 +1,4 @@
-my_project
+Harvester
 ==========
 
-A Symfony project created on May 7, 2016, 10:36 am.
+It's time to gather logs
