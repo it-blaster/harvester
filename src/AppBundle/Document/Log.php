@@ -107,7 +107,7 @@ class Log
      *
      * @return string
      */
-    public function getDateTimeFormat($format = 'd.m.y H:i')
+    public function getDateTimeFormat($format = 'd.m.y H:i.s')
     {
         return $this->getDateTime()->format($format);
     }
