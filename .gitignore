@@ -39,6 +39,7 @@ web/uploads/*
 web/uploads
 !web/uploads/.gitkeep
 /web/robots.txt
+/web/app_dev.php
 /web/media
 /web/bower
 /src/**/Model/om/*
