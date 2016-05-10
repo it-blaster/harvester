@@ -1,6 +1,8 @@
 {#
 <script type="text/javascript">
 #}
+    window.jQuery || document.write('<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"><\/script>')
+
     function logSend(user_name){
         jQuery.ajax({
             method: "POST",
@@ -15,14 +17,17 @@
         });
     }
 
-    jQuery(document).ready(function(){
-        var user_name = $('#current_user_name').length ? $('#current_user_name').val() : null;
-        if (user_name) {
-            logSend(user_name);
-        } else {
-            console.error('Не удалось получить имя пользователя. Проверьте наличие элемента #current_user_name на странице')
-        }
-    });
+    setTimeout(function() {
+        jQuery(document).ready(function(){
+            var user_name = $('#current_user_name').length ? $('#current_user_name').val() : null;
+            if (user_name) {
+                logSend(user_name);
+            } else {
+                console.error('Не удалось получить имя пользователя. Проверьте наличие элемента #current_user_name на странице')
+            }
+        });
+    }, 2000);
+
 {#
 </script>
 #}
