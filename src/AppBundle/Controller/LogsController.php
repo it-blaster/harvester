@@ -101,7 +101,7 @@ class LogsController extends Controller
         $rep = $dm->getRepository('AppBundle:UserLog');
         $users = $dm
             ->createQueryBuilder('AppBundle:UserLog')
-            ->sort('user_name', 'ASC')
+            ->sort('updated_at', 'DESC')
             ->getQuery()
             ->execute();
 
