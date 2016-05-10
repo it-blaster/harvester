@@ -4,6 +4,7 @@
     <h1 class="page-header">{{ user.getUserName }}'s logs</h1>
 
     <div class="table-responsive">
+        Показаны последние 20 логов:
         <table class="table table-striped">
             <thead>
             <tr>
@@ -13,7 +14,7 @@
             </tr>
             </thead>
             <tbody>
-            {% for log in user.getLogs %}
+            {% for log in logs %}
                 <tr>
                     <td>{{ log.getTitle }}</td>
                     <td><a href="{{ log.getUri }}" target="_blank">{{ log.getUri }}</a></td>
