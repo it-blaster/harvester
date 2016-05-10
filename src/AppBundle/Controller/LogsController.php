@@ -126,11 +126,17 @@ class LogsController extends Controller
         $rep = $dm->getRepository('AppBundle:UserLog');
         $user_log = $rep->findOneBy(['user_name'=>$user_name]);
 
+        $logs_list = [];
+        $i=0;
         $logs = $user_log->getLogs()->slice(-20,20);
+        foreach ($logs as $log) {
+            $logs_list[$i++] = $log;
+        }
+        krsort($logs_list);
 
         return $this->render('AppBundle:logs:user_logs.html.twig', [
             'user'  => $user_log,
-            'logs'  => $logs
+            'logs'  => $logs_list
         ]);
     }
 }
