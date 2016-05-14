@@ -18,7 +18,7 @@ class SlackController extends Controller
      */
     public function testAction(Request $request)
     {
-        $url = "http://harvester.yakimov.trade.dev/app_dev.php/slack/send";
+        $url = "http://harvester.tradedealer.ru/slack/send";
         $query = [
             'slack_params[token]' => 'VHrUAa1YIvPVdPUT5c5VMzS3',
             'slack_params[chanel]' => 'hyundai_minusinsk',
